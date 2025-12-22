@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jumpsLeft--;
+            ScoreManager.Instance.AddPoints(10);
         }
     }
 
@@ -68,6 +70,16 @@ public class PlayerController : MonoBehaviour
     {
         forwardSpeed += amount;
     }
+    public IEnumerator TemporarySpeedBoost(float multiplier, float duration)
+	{
+		float originalSpeed = forwardSpeed;
+		forwardSpeed *= multiplier;
+		Debug.Log("Speed boost active!");
+		yield return new WaitForSeconds(duration);
+		forwardSpeed = originalSpeed;
+		Debug.Log("Speed boost ended");
+	}
+
 }
 
 
